@@ -118,7 +118,7 @@ python extract_production.py
 # → Automatic fallback if primary methods fail
 ```
 
-## 📊 Performance Metrics
+##  Performance Metrics
 
 Output: `output/metrics.json`
 
@@ -136,7 +136,7 @@ Output: `output/metrics.json`
 }
 ```
 
-## 🔧 Configuration
+## Configuration
 
 All settings via environment variables:
 
@@ -433,7 +433,7 @@ spec:
          └→ Results DB (PostgreSQL)
   ```
 
-## 🧪 Testing
+##  Testing
 
 ```bash
 # Unit tests
@@ -450,58 +450,7 @@ python benchmarks/performance.py
 locust -f tests/load.py --headless -u 1000 -r 100 -t 60s
 ```
 
-## 🎤 Interview Demo Script
-
-**5-minute demo** (for technical interviews):
-
-```bash
-# 1. Show the code structure (1 min)
-tree -L 2
-# Shows: config.py, logger.py, extract_production.py, tests/
-
-# 2. Run quick extraction (2 min)
-export INVOICE_ENV=development
-time python extract_production.py
-
-# Shows:
-# ✓ Extracted 1414 invoices in 1.2 seconds
-# real    0m1.234s
-
-# 3. Show results and metrics (1 min)
-head -5 output/output.csv
-cat output/metrics.json
-
-# 4. Explain architecture (1 min)
-# "Three-tier extraction with graceful degradation:
-#  1. Document models understand layout
-#  2. LLMs handle complex/messy invoices
-#  3. OCR+rules always work as fallback
-#  Result: 99% success rate across all invoice types"
-```
-
-**Extended demo** (30 minutes, for design round):
-
-1. **Code walkthrough** (5 min)
-   - Show `extract_production.py` structure
-   - Explain tier logic in `extract_invoice()`
-   - Show configuration management
-
-2. **Live demo** (10 min)
-   - Run with OCR only: `python extract_production.py`
-   - Show metrics and speed
-   - Explain error handling
-
-3. **Scalability discussion** (10 min)
-   - Show Kubernetes manifests
-   - Explain horizontal/vertical scaling
-   - Discuss cost-benefit tradeoffs
-
-4. **Q&A** (5 min)
-   - Handle follow-up questions
-   - Discuss edge cases (rotated, handwritten invoices)
-   - Explain fallback strategy
-
-## 🔗 Monitoring & Observability
+##  Monitoring & Observability
 
 ### Logging
 
@@ -536,25 +485,3 @@ grep "extraction successful" logs/extraction.log | wc -l
   }
 }
 ```
-
-### Alerts
-
-```bash
-# Alert if success rate drops below 95%
-alert: low_extraction_success
-  if: successful / total < 0.95
-  for: 5m
-  annotations:
-    summary: "Extraction success rate below 95%"
-```
-
-## 📚 References
-
-- [LayoutLM Documentation](https://huggingface.co/docs/transformers/model_doc/layoutlm)
-- [Claude Vision API](https://docs.anthropic.com/en/api/messages)
-- [Tesseract OCR](https://github.com/UB-Mannheim/tesseract/wiki)
-- [Kubernetes Scaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
-
-## 📄 License
-
-MIT License - see LICENSE file
