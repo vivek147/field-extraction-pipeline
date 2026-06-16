@@ -1,4 +1,4 @@
-# Production-Ready Invoice Field Extraction
+# Invoice Field Extraction
 
 hybrid solution for extracting key fields from invoice images using OCR, LLMs, and document models.
 
@@ -37,7 +37,7 @@ The system extracts these 9 key fields from invoices:
 - **VAT** - Tax amount
 - **Gross Worth** - Total including tax
 
-##  Quick Start (Demo)
+## Quick Start (Demo)
 
 ### 1. Installation
 
