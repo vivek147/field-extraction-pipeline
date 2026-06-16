@@ -56,15 +56,6 @@ This document summarizes the invoice field extraction solution with all deployme
 - Configuration reference
 - Interview demo scripts
 
- **DEPLOYMENT.md** (26.4 KB)
-- Local development setup (Windows/Linux/macOS)
-- Docker containerization (single + multi-stage)
-- docker-compose.yml for full stack
-- Cloud deployments (AWS, GCP, Azure, Kubernetes)
-- Database integration (PostgreSQL)
-- Monitoring, alerting, and observability setup
-
-
  **requirements.txt**
 - 30+ pinned dependencies
 - Optional groups for GPU, API, testing
@@ -119,7 +110,7 @@ Result: Always have *something* (graceful degradation)
 
 ---
 
-## 📊 Performance Metrics
+##  Performance Metrics
 
 ### Current Performance (1414 invoices)
 - **Total Time**: 1.2 seconds
@@ -134,50 +125,7 @@ Result: Always have *something* (graceful degradation)
 - **With Document Model**: 80% accuracy
 - **LLM Fallback**: 99% accuracy
 
-### Scaling Roadmap
 
-| Phase | Timeline | Throughput | Infrastructure | Cost |
-|-------|----------|-----------|-----------------|------|
-| 1. Horizontal | Week 1 | 100K/day | 4 CPU, 4GB RAM | $50/mo |
-| 2. GPU Acceleration | Week 2-3 | 500K/day | GPU VM | $500/mo |
-| 3. Distributed | Month 1-2 | 10M/day | K8s cluster | $5K/mo |
-| 4. Multi-Model | Month 3+ | 50M/day | Enterprise | $20K/mo |
-
----
-
-##  Deployment Options
-
-### Quick Start (Local)
-```bash
-python -m venv venv
-venv\Scripts\Activate.ps1  # Windows
-pip install -r requirements.txt
-python extract_production.py
-# → output/output.csv ready in 1.2 seconds
-```
-
-### Docker (Portable)
-```bash
-docker build -t invoice-extractor:1.0 .
-docker run -v /data/invoices:/data/invoices invoice-extractor:1.0
-# → Runs anywhere (dev, CI/CD, cloud)
-```
-
-### AWS Lambda (Serverless)
-```bash
-# Auto-scales 0-1000 concurrent executions
-# Triggers on S3 uploads
-# Costs ~$0.0001 per execution
-```
-
-### Kubernetes (Enterprise)
-```bash
-kubectl apply -f deployment.yaml
-kubectl scale deployment invoice-extractor --replicas=10
-# → Fault-tolerant, auto-scaling, monitored
-```
-
----
 
 ## Production Checklist
 
@@ -194,50 +142,8 @@ kubectl scale deployment invoice-extractor --replicas=10
 - ✅ Health checks and readiness probes
 - ✅ Documentation (README, DEPLOYMENT, DEMO)
 
-### Optional (For Future Enhancement)
-- 🔲 Kubernetes YAML files (templates provided)
-- 🔲 Prometheus metrics integration
-- 🔲 Distributed tracing (OpenTelemetry)
-- 🔲 Model fine-tuning pipeline
-- 🔲 A/B testing framework
-- 🔲 Cost tracking and optimization
 
----
-
-## 📁 File Structure
-
-```
-E:\Code\poc\
-├── extract_production.py        ← Main pipeline (30 KB)
-├── config.py                    ← Configuration management
-├── logger.py                    ← Structured logging
-├── api.py                       ← FastAPI REST endpoints
-├── requirements.txt             ← All dependencies (pinned)
-│
-├── README.md                    ← Quick start & architecture
-├── DEPLOYMENT.md                ← Production deployment guide
-├── DEMO.md                      ← Interview demo scripts
-│
-├── output/
-│   ├── output.csv              ← 1414 extracted invoices
-│   └── metrics.json            ← Performance metrics
-│
-├── tests/
-│   ├── __init__.py
-│   └── test_extraction.py       ← Unit & integration tests
-│
-├── Dockerfile                   ← Container definition
-├── docker-compose.yml           ← Full-stack setup
-│
-└── batch_1/                     ← Input data (1414 invoices)
-    ├── batch1_1/
-    ├── batch1_2/
-    └── batch1_3/
-```
-
----
-
-## 🎯 Key Achievements
+## Key Achievements
 
 ✅ **Hybrid Extraction Pipeline**
 - Three-tier orchestration (document models → LLM → OCR)
@@ -270,7 +176,7 @@ E:\Code\poc\
 
 ---
 
-## 🔧 Tech Stack
+##  Tech Stack
 
 **Core**
 - Python 3.11+
