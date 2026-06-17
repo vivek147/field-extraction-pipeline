@@ -54,7 +54,6 @@ logger = get_logger(__name__)
 # ============================================================================
 
 OUTPUT_COLUMNS = [
-    "File Name",
     "Seller Name",
     "Seller Tax ID",
     "Client Name",
