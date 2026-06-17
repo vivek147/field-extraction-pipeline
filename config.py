@@ -65,15 +65,15 @@ class PipelineConfig:
     environment: Environment
     input_dir: Path
     output_dir: Path
-    batch_size: int = 10
-    max_workers: int = 4
-    timeout_per_invoice: int = 300  # 5 minutes
-    retry_failed: bool = True
-    max_retries: int = 3
     document_model: DocumentModelConfig
     llm_vision: LLMVisionConfig
     ocr: OCRConfig
     logging: LoggingConfig
+    batch_size: int = 10
+    max_workers: int = 4
+    timeout_per_invoice: int = 300
+    retry_failed: bool = True
+    max_retries: int = 3
 
 
 def load_config() -> PipelineConfig:

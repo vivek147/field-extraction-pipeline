@@ -4,7 +4,7 @@ pydantic==2.5.3
 
 # Data processing & formatting
 pandas==2.1.4
-numpy==1.24.3
+numpy>=1.26.0,<2.0.0
 
 # OCR and document processing
 pytesseract==0.3.10
@@ -12,9 +12,10 @@ pillow==10.1.0
 opencv-python==4.8.1.78
 
 # Deep learning for document models (optional, for Tier 1)
-torch==2.1.2
+torch>=2.2.0,<3.0.0
 transformers==4.35.2
 huggingface-hub==0.19.4
+
 
 # LLM API integration (optional, for Tier 2)
 anthropic==0.7.8
