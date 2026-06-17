@@ -694,6 +694,61 @@ def extract_invoice(
     raise RuntimeError(f"All extraction methods failed for {image_path.name}")
 
 
+def filter_images_by_range(
+    image_paths: list[Path],
+    start_num: Optional[int] = None,
+    end_num: Optional[int] = None,
+    max_images: int = 50,
+) -> list[Path]:
+    """
+    Filter image paths by numeric range (e.g., batch1-0331 to batch1-0380).
+    
+    Enforces a maximum image limit to prevent accidental large batch processing.
+    
+    Args:
+        image_paths: List of image file paths
+        start_num: Start range (e.g., 331 for batch1-0331)
+        end_num: End range (e.g., 380 for batch1-0380)
+        max_images: Maximum images to process (default: 50)
+        
+    Returns:
+        Filtered list of image paths (limited to max_images)
+        
+    Raises:
+        ValueError: If range produces more images than max_images
+    """
+    if start_num is None and end_num is None:
+        return image_paths[:max_images]
+    
+    filtered = []
+    for path in image_paths:
+        # Extract number from filename like "batch1-0331.jpg"
+        match = re.search(r'batch1-(\d+)', path.name)
+        if match:
+            num = int(match.group(1))
+            include = True
+            if start_num is not None and num < start_num:
+                include = False
+            if end_num is not None and num > end_num:
+                include = False
+            if include:
+                filtered.append(path)
+    
+    filtered = sorted(filtered)
+    
+    # Enforce maximum image limit
+    if len(filtered) > max_images:
+        logger.warning(
+            f"Image range produced {len(filtered)} images, exceeding max_images={max_images}. "
+            f"Limiting to first {max_images} images.",
+            requested_images=len(filtered),
+            max_allowed=max_images
+        )
+        filtered = filtered[:max_images]
+    
+    return filtered
+
+
 def process_batch(
     image_paths: list[Path],
     sidecars: dict[str, dict[str, str]],
@@ -834,6 +889,24 @@ def main() -> int:
         type=int,
         help="Maximum parallel workers (overrides config)"
     )
+    parser.add_argument(
+        "--start-image",
+        type=int,
+        default=None,
+        help="Start image number (e.g., 331 for batch1-0331.jpg)"
+    )
+    parser.add_argument(
+        "--end-image",
+        type=int,
+        default=None,
+        help="End image number (e.g., 380 for batch1-0380.jpg)"
+    )
+    parser.add_argument(
+        "--max-images",
+        type=int,
+        default=50,
+        help="Maximum images to process in this batch (default: 50)"
+    )
     
     args = parser.parse_args()
     
@@ -867,6 +940,31 @@ def main() -> int:
     
     # Find image files
     image_paths = sorted(config.input_dir.rglob("batch1-*.jpg"))
+    
+    # Apply range filter if specified
+    if args.start_image is not None or args.end_image is not None:
+        image_paths = filter_images_by_range(
+            image_paths,
+            start_num=args.start_image,
+            end_num=args.end_image,
+            max_images=args.max_images,
+        )
+        logger.info(
+            f"Applied image range filter",
+            start=args.start_image,
+            end=args.end_image,
+            max_images=args.max_images,
+            matching_images=len(image_paths)
+        )
+    elif args.max_images and args.max_images < len(image_paths):
+        # Apply max_images limit even without range
+        image_paths = image_paths[:args.max_images]
+        logger.info(
+            f"Limited images to max_images",
+            max_images=args.max_images,
+            total_images=len(image_paths)
+        )
+    
     logger.info(f"Found {len(image_paths)} invoice images")
     
     if not image_paths:
