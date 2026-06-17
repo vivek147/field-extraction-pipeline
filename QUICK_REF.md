@@ -21,26 +21,6 @@ docker build -t invoice:1.0 .
 docker run -v /data:/data invoice:1.0
 # → Reproducible anywhere
 ```
-
-### Option 3: AWS Lambda
-```bash
-# Package code, upload, connect to S3
-# Auto-scales on demand, pay per execution
-```
-
-### Option 4: Kubernetes
-```bash
-kubectl apply -f deployment.yaml
-kubectl scale --replicas=10
-# → Auto-scales, fault-tolerant
-```
-
-### Option 5: API Server
-```bash
-python -m uvicorn api:app --host 0.0.0.0 --port 8000
-# → REST API at http://localhost:8000/docs
-```
-
 ---
 
 ##  Architecture 
@@ -69,7 +49,7 @@ Invoice Image
   (100% success rate)
 ```
 
-## 🔧 Environment Variables
+##  Environment Variables
 
 ```bash
 # Essential
@@ -98,7 +78,7 @@ export LOG_FILE=logs/extraction.log
 
 ---
 
-## ✅ Verification Checklist
+## Verification Checklist
 
 After deployment:
 ```bash
